@@ -34,3 +34,4 @@ wadllib==1.3.6
 websockets==9.1
 yt-dlp==2025.3.27
 zipp==1.0.0
+google-cloud-firestore
