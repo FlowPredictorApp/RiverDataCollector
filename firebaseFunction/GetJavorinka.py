@@ -5,7 +5,7 @@ from typing import Optional, List, Dict
 from datetime import datetime
 
 
-def main() -> Optional[List[Dict]]:
+def getJavorinka() -> Optional[List[Dict]]:
     url = "https://www.shmu.sk/en/?page=1&id=hydro_vod_all&station_id=7930"
     headers = {'User-Agent': 'Mozilla/5.0'}
     response = requests.get(url, headers=headers)
@@ -37,4 +37,4 @@ def main() -> Optional[List[Dict]]:
 
 if __name__ == "__main__":
     print("Collecting data from Javorinka")
-    data = main()
+    data = getJavorinka()
