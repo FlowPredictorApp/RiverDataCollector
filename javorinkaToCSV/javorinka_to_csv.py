@@ -7,7 +7,7 @@ url = "https://www.shmu.sk/en/?page=1&id=hydro_vod_all&station_id=7930"
 headers = {'User-Agent': 'Mozilla/5.0'}
 response = requests.get(url, headers=headers)
 response.encoding = 'utf-8'
-fileName = "output/hydro_data.csv"
+fileName = "javorinkaToCSV/hydro_data.csv"
 
 soup = BeautifulSoup(response.text, "html.parser")
 table: Optional[BeautifulSoup] = soup.find("table", class_="dynamictable w600 center stripped")
