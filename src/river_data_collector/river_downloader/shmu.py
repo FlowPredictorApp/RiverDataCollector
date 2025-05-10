@@ -17,6 +17,7 @@ class Shmu(RiverDownloaderInterface):
             return self.get_javorinka()
         else:
             print(f"River {river_name} not supported.")
+            print (f"Supported rivers: {', '.join([name for name in SlovakiaRiverNames.__dict__.keys() if not name.startswith('__')])}")
             return None
         
     def parse_table(self, table: BeautifulSoup) -> Optional[List[Dict]]:
