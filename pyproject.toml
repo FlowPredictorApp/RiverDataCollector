@@ -1,6 +1,6 @@
 [project]
 name = "river_data_collector"
-version = "0.1.0"
+version = "0.1.1"
 description = "Downloads river records"
 authors = [
     {name = "Mateusz Gasior",email = "mateuszgasior314@gmail.com"}
