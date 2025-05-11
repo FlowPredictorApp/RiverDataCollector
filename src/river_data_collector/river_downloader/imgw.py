@@ -1,4 +1,5 @@
 from enum import Enum
+import json
 import os
 import requests
 from typing import Optional, List, Dict
@@ -199,4 +200,12 @@ if __name__ == "__main__":
     station_name = StationsNames.TRYBSZ2.value
     since_date = date(2023, 1, 1)
     till_date = date(2023, 2, 1)
-    downloader.get_river_data(river_name, station_name, since_date, till_date, False)
+    data = downloader.get_river_data(river_name, station_name, since_date, till_date, False)
+    #save data to json file
+    if data:
+        for measurement_name, collection in data.items():
+            with open(f"{measurement_name}.json", "w") as file:
+                json.dump([measurement.__dict__ for measurement in collection.measurements], file, default=str)
+        print(f"Data saved to {measurement_name}.json")
+    else:
+        print("No data collected.")
