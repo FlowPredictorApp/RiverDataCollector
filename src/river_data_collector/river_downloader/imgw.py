@@ -14,11 +14,6 @@ class ImgwMeasurementMetadata(MeasurementMetadata):
         super().__init__(measurement_name, unit, measurement_type)
         self.measurement_id = measurement_id
 
-class ImgwMeasurementsNames:
-    FLOW = "Flow"
-    OPERATIONAL_WATER_LEVEL = "Operational Water Level"
-    CONTROL_WATER_LEVEL = "Control Water Level"
-
 class PolishRiversNames(Enum):
     BIALKA = "Bialka"
 
@@ -28,22 +23,22 @@ class StationsNames(Enum):
 class ImgwDownloader(RiverDownloaderInterface):
 
     BASE_URL = "https://danepubliczne.imgw.pl/pl/datastore/getfiledown"
+    IMGW_TIMESTAMP_FORMAT = "%Y-%m-%d %H:%M"
     YEAR_URL = "/Arch/Telemetria/Hydro/"
     ZIP_FILES_PATH = "downloads/"
     UNZIPPED_FILES_PATH = "unzipped_files/"
     MONTH_URL_PREFIX = "Hydro_"
 
     IMGW_MEASUREMENTS = {
-        ImgwMeasurementsNames.FLOW: ImgwMeasurementMetadata(ImgwMeasurementsNames.FLOW, "m3/s", MeasurementType.Hydrological, "B00050S"),
-        ImgwMeasurementsNames.OPERATIONAL_WATER_LEVEL: ImgwMeasurementMetadata(ImgwMeasurementsNames.OPERATIONAL_WATER_LEVEL, "cm", MeasurementType.Hydrological, "B00020S"),
-        ImgwMeasurementsNames.CONTROL_WATER_LEVEL: ImgwMeasurementMetadata(ImgwMeasurementsNames.CONTROL_WATER_LEVEL, "cm", MeasurementType.Hydrological, "B00014A"),
+        RiverMeasurementsNames.FLOW.value : ImgwMeasurementMetadata(RiverMeasurementsNames.FLOW.value, "m3/s", MeasurementType.Hydrological, "B00050S"),
+        RiverMeasurementsNames.WATER_LEVEL.value: ImgwMeasurementMetadata(RiverMeasurementsNames.WATER_LEVEL.value, "cm", MeasurementType.Hydrological, "B00020S"),
     }
 
     MEASUREMENTS_COLLECTIONS = {
-        ImgwMeasurementsNames.FLOW: MeasurementsCollection(IMGW_MEASUREMENTS[ImgwMeasurementsNames.FLOW], []),
-        ImgwMeasurementsNames.OPERATIONAL_WATER_LEVEL: MeasurementsCollection(IMGW_MEASUREMENTS[ImgwMeasurementsNames.OPERATIONAL_WATER_LEVEL], []),
-        ImgwMeasurementsNames.CONTROL_WATER_LEVEL: MeasurementsCollection(IMGW_MEASUREMENTS[ImgwMeasurementsNames.CONTROL_WATER_LEVEL], []),
+        RiverMeasurementsNames.FLOW.value: MeasurementsCollection(RiverMesaurements[RiverMeasurementsNames.FLOW.value], []),
+        RiverMeasurementsNames.WATER_LEVEL.value: MeasurementsCollection(RiverMesaurements[RiverMeasurementsNames.WATER_LEVEL.value], []),
     }
+
 
     POLISH_RIVERS = {
         PolishRiversNames.BIALKA.value: River(PolishRiversNames.BIALKA.value, {
@@ -137,7 +132,7 @@ class ImgwDownloader(RiverDownloaderInterface):
             for line in lines:
                 data = line.strip().split(";")
                 if station.id in data[0]:
-                    basic_measurement = BasicMeasurement(data[3], datetime.datetime.strptime(data[2], '%Y-%m-%d %H:%M'))
+                    basic_measurement = BasicMeasurement(data[3], datetime.datetime.strptime(data[2], self.IMGW_TIMESTAMP_FORMAT))
                     measurements.append(basic_measurement)
         if measurements:
             print(f"Read {len(measurements)} measurements from {file_name} for station {station.name}")
