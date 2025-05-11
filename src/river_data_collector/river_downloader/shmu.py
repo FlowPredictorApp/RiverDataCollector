@@ -27,8 +27,8 @@ class ShmuDownloader(RiverDownloaderInterface):
 
     MEASUREMENTS_COLLECTIONS = {
         RiverMeasurementsNames.WATER_LEVEL.value: MeasurementsCollection(RiverMesaurements[RiverMeasurementsNames.FLOW.value], []),
-        RiverMeasurementsNames.WATER_TEMPERATURE.value: MeasurementsCollection(RiverMeasurementsNames.WATER_TEMPERATURE.value, []),
-}
+        RiverMeasurementsNames.WATER_TEMPERATURE.value: MeasurementsCollection(RiverMesaurements[RiverMeasurementsNames.WATER_TEMPERATURE.value], []),
+    }
 
     SLOVAKIA_RIVERS = {
         SlovakiaRiverNames.JAVORINKA.value: River(SlovakiaRiverNames.JAVORINKA.value, {
