@@ -7,10 +7,10 @@ class MeasurementType:
     Meteorological = "Meteorological"
 
 class MeasurementMetadata:
-    def __init__(self, measurement_name: str, unit: str, measurement_type: MeasurementType):
-        self.measurement_name = measurement_name
+    def __init__(self, name: str, unit: str, type: MeasurementType):
+        self.name = name
         self.unit = unit
-        self.measurement_type = measurement_type
+        self.type = type
 
 class RiverMesaurements:
     Flow = MeasurementMetadata("Flow", "m3/s", MeasurementType.Hydrological),

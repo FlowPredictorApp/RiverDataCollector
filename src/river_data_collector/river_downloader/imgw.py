@@ -54,7 +54,7 @@ class ImgwDownloader(RiverDownloaderInterface):
     def get_river_data(self, river_name: str, station_name: str, since: date, till: date) -> Optional[Dict[str, MeasurementsCollection]]:
         try:
             river, station = self.validate_parameters(river_name, station_name, since, till)
-            print(f"Fetching data for river: {river.river_name}, station: {station.name}, from {since} to {till}")
+            print(f"Fetching data for river: {river.name}, station: {station.name}, from {since} to {till}")
         except ValueError as error:
             print(error)
             return None
@@ -78,7 +78,7 @@ class ImgwDownloader(RiverDownloaderInterface):
                     for metadata in self.IMGW_MEASUREMENTS.values():
                         measurement_type_file_name = f"{metadata.measurement_id}_{year}_{month:02d}.csv"
                         if measurement_type_file_name in measurements_files:
-                            self.MEASUREMENTS_COLLECTIONS[metadata.measurement_name].measurements.extend(
+                            self.MEASUREMENTS_COLLECTIONS[metadata.name].measurements.extend(
                                 self.read_measurements_collection(measurement_type_file_name, station)
                             )
                         else:
@@ -180,12 +180,10 @@ class ImgwDownloader(RiverDownloaderInterface):
 
     def clear_directories(self):
         for file in os.listdir(self.ZIP_FILES_PATH):
-            print(f"Removing {file} from {self.ZIP_FILES_PATH}")
             os.remove(os.path.join(self.ZIP_FILES_PATH, file))
         for file in os.listdir(self.UNZIPPED_FILES_PATH):
-            print(f"Clearing {file}")
             os.remove(os.path.join(self.UNZIPPED_FILES_PATH, file))
-        print("Cleared directories.")
+        print("Removed downloaded files")
 
 if __name__ == "__main__":
     # Example usage
