@@ -48,7 +48,7 @@ class ImgwDownloader(RiverDownloaderInterface):
     }
 
 
-    def get_river_data(self, river_name: str, station_name: str, since: date, till: date, clear_files: bool) -> Optional[Dict[str, MeasurementsCollection]]:
+    def get_river_data(self, river_name: str, station_name: str, since: date, till: date, clear_files = True) -> Optional[Dict[str, MeasurementsCollection]]:
         """Fetches data for a given river between specified dates.
         Args:
             river_name (str): The name of the river to fetch data for. River names should be defined in a separate class.
@@ -191,6 +191,10 @@ class ImgwDownloader(RiverDownloaderInterface):
             os.remove(os.path.join(self.ZIP_FILES_PATH, file))
         for file in os.listdir(self.UNZIPPED_FILES_PATH):
             os.remove(os.path.join(self.UNZIPPED_FILES_PATH, file))
+        if os.path.exists(self.ZIP_FILES_PATH) and not os.listdir(self.ZIP_FILES_PATH):
+            os.rmdir(self.ZIP_FILES_PATH)
+        if os.path.exists(self.UNZIPPED_FILES_PATH) and not os.listdir(self.UNZIPPED_FILES_PATH):
+            os.rmdir(self.UNZIPPED_FILES_PATH)
         print("Removed downloaded files")
 
 if __name__ == "__main__":
@@ -200,11 +204,14 @@ if __name__ == "__main__":
     station_name = StationsNames.TRYBSZ2.value
     since_date = date(2023, 1, 1)
     till_date = date(2023, 2, 1)
-    data = downloader.get_river_data(river_name, station_name, since_date, till_date, False)
+    data = downloader.get_river_data(river_name, station_name, since_date, till_date, clear_files=False)
     #save data to json file
     if data:
+        output_dir = "output/"
+        if not os.path.exists(output_dir):
+            os.makedirs(output_dir)
         for measurement_name, collection in data.items():
-            with open(f"{measurement_name}.json", "w") as file:
+            with open(f"{output_dir}{measurement_name}.json", "w") as file:
                 json.dump([measurement.__dict__ for measurement in collection.measurements], file, default=str)
         print(f"Data saved to {measurement_name}.json")
     else:
