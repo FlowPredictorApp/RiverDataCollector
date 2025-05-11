@@ -2,10 +2,12 @@ from abc import ABC, abstractmethod
 from typing import Dict, List, Optional
 from datetime import date
 
+from river_data_collector.river_downloader.models.measurement import MeasurementsCollection
+
 class RiverDownloaderInterface(ABC):
 
     @abstractmethod
-    def get_river_data(self, river_name: str, since: date, till: date) -> Optional[List[Dict[str, any]]]:
+    def get_river_data(self, river_name: str, station_id: str, since: date, till: date) -> Optional[Dict[str, MeasurementsCollection]]:
         """Fetches data for a given river between specified dates.
         
         Args:
@@ -14,6 +16,6 @@ class RiverDownloaderInterface(ABC):
             till (date): The end date for data collection.
         
         Returns:
-            Optional[List[Dict[str, any]]]: A list of data records, or None if data retrieval fails.
+            Collection of all RiverMesaurements that are avaiable for the river. None if data retrieval fails or data is not present.
         """
         pass
