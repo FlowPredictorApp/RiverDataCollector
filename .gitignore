@@ -2,6 +2,7 @@
 /.vscode
 /downloads
 /unzipped_files
+*.json
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
