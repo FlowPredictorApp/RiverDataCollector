@@ -1,5 +1,7 @@
 *.csv
 /.vscode
+/downloads
+/unzipped_files
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
