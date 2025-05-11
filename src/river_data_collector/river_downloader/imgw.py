@@ -46,7 +46,18 @@ class ImgwDownloader(RiverDownloaderInterface):
         })
     }
 
-    def get_river_data(self, river_name: str, station_name: str, since: date, till: date) -> Optional[Dict[str, MeasurementsCollection]]:
+
+    def get_river_data(self, river_name: str, station_name: str, since: date, till: date, clear_files: bool) -> Optional[Dict[str, MeasurementsCollection]]:
+        """Fetches data for a given river between specified dates.
+        Args:
+            river_name (str): The name of the river to fetch data for. River names should be defined in a separate class.
+            station_name (str): The name of the station to fetch data for.
+            since (date): The start date for data collection. 
+            till (date): The end date for data collection.
+            clear_files (bool): If True, downloaded files will be removed after processing.
+            Returns:
+                Collection of all RiverMesaurements that are available for the river. None if data retrieval fails or data is not present.
+                """
         try:
             river, station = self.validate_parameters(river_name, station_name, since, till)
             print(f"Fetching data for river: {river.name}, station: {station.name}, from {since} to {till}")
@@ -85,7 +96,8 @@ class ImgwDownloader(RiverDownloaderInterface):
         print("Collected measurements:")
         for measurement_name, collection in self.MEASUREMENTS_COLLECTIONS.items():
             print(f"{measurement_name}: {len(collection.measurements)} measurements")
-        self.clear_directories()
+        if clear_files:
+            self.clear_directories()
         return self.MEASUREMENTS_COLLECTIONS
 
     def get_imgw_data(self, url: str) -> requests.Response:
@@ -187,4 +199,4 @@ if __name__ == "__main__":
     station_name = StationsNames.TRYBSZ2.value
     since_date = date(2023, 1, 1)
     till_date = date(2023, 2, 1)
-    downloader.get_river_data(river_name, station_name, since_date, till_date)
+    downloader.get_river_data(river_name, station_name, since_date, till_date, False)
