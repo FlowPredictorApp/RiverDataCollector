@@ -1,6 +1,6 @@
 import datetime
+from enum import Enum
 from typing import List
-
 
 class MeasurementType:
     Hydrological = "Hydrological"
@@ -11,10 +11,18 @@ class MeasurementMetadata:
         self.name = name
         self.unit = unit
         self.type = type
+        
+class RiverMeasurementsNames(Enum):
+    TIMESTAMP = "TIMESTAMP"
+    WATER_LEVEL = "WATER_LEVEL"
+    WATER_TEMPERATURE = "WATER_TEMPERATURE"
+    FLOW = "FLOW"
 
-class RiverMesaurements:
-    Flow = MeasurementMetadata("Flow", "m3/s", MeasurementType.Hydrological),
-    WaterLevel = MeasurementMetadata("Water Level", "cm", MeasurementType.Hydrological),
+RiverMesaurements = {
+    RiverMeasurementsNames.FLOW.value : MeasurementMetadata(RiverMeasurementsNames.FLOW.value, "m3/s", MeasurementType.Hydrological),
+    RiverMeasurementsNames.WATER_LEVEL.value : MeasurementMetadata(RiverMeasurementsNames.WATER_LEVEL.value, "cm", MeasurementType.Hydrological),
+    RiverMeasurementsNames.WATER_TEMPERATURE.value : MeasurementMetadata(RiverMeasurementsNames.WATER_TEMPERATURE.value, "°C", MeasurementType.Hydrological),
+}
 
 class BasicMeasurement:
     def __init__(self, value: str, timestamp: datetime):
